@@ -15,8 +15,8 @@ public class Profissional {
     @Column(name = "id_profissional")
     private Long id;
 
-    @Column(nullable = false, length = 255)
-    private String nome_completo;
+    @Column(name = "nome_completo", nullable = false, length = 255)
+    private String nomeCompleto;
 
     @Column(unique = true, nullable = false, length = 255)
     private String email;

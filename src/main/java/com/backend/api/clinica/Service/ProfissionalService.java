@@ -1,4 +1,49 @@
 package com.backend.api.clinica.Service;
 
+import com.backend.api.clinica.DTOS.RequestDTO.ProfissionalRequest;
+import com.backend.api.clinica.DTOS.ResponseDTO.ProfissionalResponse;
+import com.backend.api.clinica.Entity.Profissional;
+import com.backend.api.clinica.Mapper.ProfissionalMapper;
+import com.backend.api.clinica.Repository.ProfissionalRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
 public class ProfissionalService {
+
+    private final ProfissionalRepository repository;
+    private final PasswordEncoder encoder;
+    private final ProfissionalMapper mapper;
+
+    public Profissional buscarUsuarioPorId(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+    }
+
+    //Transactional serve para ou fazer uma operação por completa ou não fazer ela
+    @Transactional
+
+    //Metodo de cadastrar profissional que vai retornar um response
+    //Corpo da função vai receber um request
+    public ProfissionalResponse cadastrarProfissional(ProfissionalRequest request){
+
+        //Aqui transforma o request que ta vindo em uma entidade do meu banco e
+        //joga na variavel profissional
+        Profissional profissional = mapper.toEntity(request);
+
+        //Modifica a senha para fazer um hash e criptografar ela
+        profissional.setSenha(encoder.encode(request.senha()));
+
+        //Repository salva profissional, agora na entity tem id, nome, email e senha hasheada
+        repository.save(profissional);
+
+        //Retorna o mapper que tranformar a entidade em um response
+        //Mandando so id, nome e email
+        return mapper.toResponse(profissional);
+
+    }
 }

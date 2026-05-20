@@ -12,7 +12,7 @@ public record ProfissionalRequest(
                 description = "Nome do profissional",
                 example = "João James Antonio"
         )
-        String nome,
+        String nomeCompleto,
 
         @NotBlank
         @Email
