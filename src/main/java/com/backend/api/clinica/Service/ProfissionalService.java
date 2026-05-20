@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProfissionalService {
@@ -30,7 +32,6 @@ public class ProfissionalService {
     //Metodo de cadastrar profissional que vai retornar um response
     //Corpo da função vai receber um request
     public ProfissionalResponse cadastrarProfissional(ProfissionalRequest request){
-
         //Aqui transforma o request que ta vindo em uma entidade do meu banco e
         //joga na variavel profissional
         Profissional profissional = mapper.toEntity(request);
@@ -45,5 +46,16 @@ public class ProfissionalService {
         //Mandando so id, nome e email
         return mapper.toResponse(profissional);
 
+    }
+
+    public List<ProfissionalResponse> buscarProfissionais(){
+        //Retorna o findAll onde mostra todos os profissionais
+        //Stream serve para fazer operações
+        //.map é para transformar cada coisa que veio do stream em um tipo ProfissionalResponse
+        //toList é para listar
+        return repository.findAll()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 }

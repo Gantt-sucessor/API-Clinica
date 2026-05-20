@@ -11,10 +11,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,5 +38,15 @@ public class ProfissionalController {
         //Retorna o status do response entity como criado
         //Body dele recebe o metodo de cadastro do service
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrarProfissional(request));
+    }
+
+    @Operation(summary = "Lista todos os profissionais")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    @GetMapping("/listarProfissionais")
+    public ResponseEntity<List<ProfissionalResponse>> listarProfissionais(){
+        return ResponseEntity.ok(service.buscarProfissionais());
     }
 }
