@@ -1,4 +1,4 @@
 package com.backend.api.clinica.DTOS.ResponseDTO;
 
-public class ProfissionalResponse {
+public record ProfissionalResponse(Long id, String nome, String email) {
 }
