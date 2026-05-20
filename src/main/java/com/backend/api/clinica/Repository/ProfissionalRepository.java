@@ -1,4 +1,7 @@
 package com.backend.api.clinica.Repository;
 
-public class ProfissionalRepository {
+import com.backend.api.clinica.Entity.ProfissionalEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProfissionalRepository extends JpaRepository<ProfissionalEntity, Long> {
 }
