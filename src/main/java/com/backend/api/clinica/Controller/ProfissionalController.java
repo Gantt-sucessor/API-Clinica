@@ -68,9 +68,18 @@ public class ProfissionalController {
         return ResponseEntity.ok(service.atualizarProfissional(id,dto));
     }
 
-    @PutMapping("atualizarSenha/{id}")
+    @PutMapping("/atualizarSenha/{id}")
     public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody @Valid AtualizarSenha dto){
         service.atualizarSenhaProfissional(id,dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    //Aqui a função é PUT porque como vai atualizar o status para inativo, não vai ser delete
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<Void> desativarUsuario(@PathVariable @Valid Long id){
+        //Chama o desativar profissional passando o id dele
+        service.desativarProfissional(id);
 
         return ResponseEntity.noContent().build();
     }

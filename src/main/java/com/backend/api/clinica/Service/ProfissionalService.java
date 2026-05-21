@@ -87,4 +87,16 @@ public class ProfissionalService {
         profissional.setSenha(encoder.encode(dto.novaSenha()));
 
     }
+
+    @Transactional
+    public void desativarProfissional(Long id){
+        //Buscando profissional (lança a exceção descrita mais pra cima)
+        Profissional profissional = buscarPorId(id);
+
+        //Alterar o status do profissional que ele achou pelo ID para inativo
+        profissional.setAtivo(false);
+
+        //Salva a alteração (Faz um UPDATE no banco de dados)
+        repository.save(profissional);
+    }
 }
