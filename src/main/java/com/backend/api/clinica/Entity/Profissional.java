@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -26,4 +28,7 @@ public class Profissional {
 
     @Column(nullable = false)
     private boolean ativo = true;
+
+    @Column(name = "data_inativacao",nullable = false)
+    private LocalDateTime dataInativacao;
 }

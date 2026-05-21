@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -95,6 +96,7 @@ public class ProfissionalService {
 
         //Alterar o status do profissional que ele achou pelo ID para inativo
         profissional.setAtivo(false);
+        profissional.setDataInativacao(LocalDateTime.now());
 
         //Salva a alteração (Faz um UPDATE no banco de dados)
         repository.save(profissional);
