@@ -2,6 +2,8 @@ package com.backend.api.clinica.Controller;
 
 import com.backend.api.clinica.DTOS.RequestDTO.ProfissionalRequest;
 import com.backend.api.clinica.DTOS.ResponseDTO.ProfissionalResponse;
+import com.backend.api.clinica.DTOS.UpdateDTO.AtualizarDados;
+import com.backend.api.clinica.DTOS.UpdateDTO.AtualizarSenha;
 import com.backend.api.clinica.Service.ProfissionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -59,5 +61,17 @@ public class ProfissionalController {
     @GetMapping("/listarProfissional/{id}")
     public ResponseEntity<ProfissionalResponse> listarProfissional(@PathVariable Long id){
         return ResponseEntity.ok(service.buscarProfissionalPorId(id));
+    }
+
+    @PutMapping("/atualizarProfisisonal/{id}")
+    public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable Long id, @RequestBody @Valid AtualizarDados dto){
+        return ResponseEntity.ok(service.atualizarProfissional(id,dto));
+    }
+
+    @PutMapping("atualizarSenha/{id}")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody @Valid AtualizarSenha dto){
+        service.atualizarSenhaProfissional(id,dto);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,4 +1,8 @@
 package com.backend.api.clinica.DTOS.UpdateDTO;
 
-public class AtualizarSenha {
+public record AtualizarSenha(
+        String senhaAtual,
+
+        String novaSenha
+) {
 }

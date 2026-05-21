@@ -2,6 +2,8 @@ package com.backend.api.clinica.Service;
 
 import com.backend.api.clinica.DTOS.RequestDTO.ProfissionalRequest;
 import com.backend.api.clinica.DTOS.ResponseDTO.ProfissionalResponse;
+import com.backend.api.clinica.DTOS.UpdateDTO.AtualizarDados;
+import com.backend.api.clinica.DTOS.UpdateDTO.AtualizarSenha;
 import com.backend.api.clinica.Entity.Profissional;
 import com.backend.api.clinica.Mapper.ProfissionalMapper;
 import com.backend.api.clinica.Repository.ProfissionalRepository;
@@ -21,7 +23,7 @@ public class ProfissionalService {
     private final PasswordEncoder encoder;
     private final ProfissionalMapper mapper;
 
-    public Profissional buscarUsuarioPorId(Long id){
+    public Profissional buscarPorId(Long id){
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
     }
@@ -63,5 +65,26 @@ public class ProfissionalService {
         return repository.findById(id)
                 .map(mapper::toResponse)
                 .orElseThrow(() -> new EntityNotFoundException("Profissional com não foi encontrado"));
+    }
+
+    @Transactional
+    public ProfissionalResponse atualizarProfissional(Long id, AtualizarDados dto){
+        Profissional profissional = buscarPorId(id);
+
+        mapper.updateEntityFromDto(dto, profissional);
+
+        return mapper.toResponse(profissional);
+    }
+
+    @Transactional
+    public void atualizarSenhaProfissional(Long id, AtualizarSenha dto){
+        Profissional profissional = buscarPorId(id);
+
+        if(!encoder.matches(dto.senhaAtual(), profissional.getSenha())){
+            throw new IllegalArgumentException("Senha atual está inválida");
+        }
+
+        profissional.setSenha(encoder.encode(dto.novaSenha()));
+
     }
 }
