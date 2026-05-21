@@ -58,4 +58,10 @@ public class ProfissionalService {
                 .map(mapper::toResponse)
                 .toList();
     }
+
+    public ProfissionalResponse buscarProfissionalPorId(Long id){
+        return repository.findById(id)
+                .map(mapper::toResponse)
+                .orElseThrow(() -> new EntityNotFoundException("Profissional com não foi encontrado"));
+    }
 }

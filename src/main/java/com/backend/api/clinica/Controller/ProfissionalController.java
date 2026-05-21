@@ -49,4 +49,15 @@ public class ProfissionalController {
     public ResponseEntity<List<ProfissionalResponse>> listarProfissionais(){
         return ResponseEntity.ok(service.buscarProfissionais());
     }
+
+    @Operation(summary = "Mostra profissional com um ID específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Profissional encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Profissional não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
+    @GetMapping("/listarProfissional/{id}")
+    public ResponseEntity<ProfissionalResponse> listarProfissional(@PathVariable Long id){
+        return ResponseEntity.ok(service.buscarProfissionalPorId(id));
+    }
 }
