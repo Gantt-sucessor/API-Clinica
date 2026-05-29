@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -59,17 +60,17 @@ public class ProfissionalController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @GetMapping("/listarProfissional/{id}")
-    public ResponseEntity<ProfissionalResponse> listarProfissional(@PathVariable Long id){
+    public ResponseEntity<ProfissionalResponse> listarProfissional(@PathVariable UUID id){
         return ResponseEntity.ok(service.buscarProfissionalPorId(id));
     }
 
     @PutMapping("/atualizarProfisisonal/{id}")
-    public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable Long id, @RequestBody @Valid AtualizarDados dto){
+    public ResponseEntity<ProfissionalResponse> atualizarProfissional(@PathVariable UUID id, @RequestBody @Valid AtualizarDados dto){
         return ResponseEntity.ok(service.atualizarProfissional(id,dto));
     }
 
     @PutMapping("/atualizarSenha/{id}")
-    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody @Valid AtualizarSenha dto){
+    public ResponseEntity<Void> atualizarSenha(@PathVariable UUID id, @RequestBody @Valid AtualizarSenha dto){
         service.atualizarSenhaProfissional(id,dto);
 
         return ResponseEntity.noContent().build();
@@ -77,7 +78,7 @@ public class ProfissionalController {
 
     //Aqui a função é PUT porque como vai atualizar o status para inativo, não vai ser delete
     @PutMapping("/{id}/desativar")
-    public ResponseEntity<Void> desativarUsuario(@PathVariable @Valid Long id){
+    public ResponseEntity<Void> desativarUsuario(@PathVariable @Valid UUID id){
         //Chama o desativar profissional passando o id dele
         service.desativarProfissional(id);
 

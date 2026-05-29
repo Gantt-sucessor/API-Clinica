@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +25,8 @@ public class ProfissionalService {
     private final PasswordEncoder encoder;
     private final ProfissionalMapper mapper;
 
-    public Profissional buscarPorId(Long id){
-        return repository.findById(id)
+    public Profissional buscarPorId(UUID publicId){
+        return repository.findByPublicId(publicId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
     }
 
@@ -62,15 +63,13 @@ public class ProfissionalService {
                 .toList();
     }
 
-    public ProfissionalResponse buscarProfissionalPorId(Long id){
-        return repository.findById(id)
-                .map(mapper::toResponse)
-                .orElseThrow(() -> new EntityNotFoundException("Profissional com não foi encontrado"));
+    public ProfissionalResponse buscarProfissionalPorId(UUID publicId){
+        return mapper.toResponse(buscarPorId(publicId));
     }
 
     @Transactional
-    public ProfissionalResponse atualizarProfissional(Long id, AtualizarDados dto){
-        Profissional profissional = buscarPorId(id);
+    public ProfissionalResponse atualizarProfissional(UUID publicId, AtualizarDados dto){
+        Profissional profissional = buscarPorId(publicId);
 
         mapper.updateEntityFromDto(dto, profissional);
 
@@ -78,8 +77,8 @@ public class ProfissionalService {
     }
 
     @Transactional
-    public void atualizarSenhaProfissional(Long id, AtualizarSenha dto){
-        Profissional profissional = buscarPorId(id);
+    public void atualizarSenhaProfissional(UUID publicId, AtualizarSenha dto){
+        Profissional profissional = buscarPorId(publicId);
 
         if(!encoder.matches(dto.senhaAtual(), profissional.getSenha())){
             throw new IllegalArgumentException("Senha atual está inválida");
@@ -90,9 +89,9 @@ public class ProfissionalService {
     }
 
     @Transactional
-    public void desativarProfissional(Long id){
+    public void desativarProfissional(UUID publicId){
         //Buscando profissional (lança a exceção descrita mais pra cima)
-        Profissional profissional = buscarPorId(id);
+        Profissional profissional = buscarPorId(publicId);
 
         //Alterar o status do profissional que ele achou pelo ID para inativo
         profissional.setAtivo(false);

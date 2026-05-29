@@ -1,4 +1,6 @@
 package com.backend.api.clinica.DTOS.ResponseDTO;
 
-public record ProfissionalResponse(Long id, String nomeCompleto, String email) {
+import java.util.UUID;
+
+public record ProfissionalResponse(UUID publicId, String nomeCompleto, String email) {
 }
